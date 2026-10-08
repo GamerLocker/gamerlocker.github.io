@@ -1,10 +1,8 @@
-# GamerLocker Pages
+# GamerLocker Pages v3
 
-Site estático do GamerLocker para GitHub Pages.
+Site público do GamerLocker.
 
-## URLs
+- `/` — apresentação, funcionamento, recursos, diferenciais, segurança e PRO.
+- `/auth-confirmed/` — confirmação de conta do Supabase.
 
-- Home: `https://gamerlocker.github.io/`
-- Confirmação de conta: `https://gamerlocker.github.io/auth-confirmed/`
-
-O site não contém chaves do Supabase, credenciais ou dados do cofre.
+A página explica explicitamente que o GamerLocker não substitui passkeys ou 2FA.

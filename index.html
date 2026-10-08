@@ -1,63 +1,351 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#10131d" />
-  <title>GamerLocker</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090b11">
+  <meta name="description" content="GamerLocker: organize suas contas de jogos em um cofre local criptografado, com backup, importação e recursos de segurança.">
+  <title>GamerLocker • Seu cofre gamer</title>
   <style>
-    :root {
-      color-scheme: dark;
-      --bg:#090b11; --panel:#121621; --line:#2b3140; --text:#f3f0ff;
-      --muted:#9da4b5; --accent:#a997ff; --accent2:#6d5ce8;
+    :root{
+      color-scheme:dark;
+      --bg:#080a10;--panel:#11151f;--panel2:#151a27;--line:#2b3140;
+      --text:#f5f3ff;--muted:#9aa2b4;--accent:#aa98ff;--accent2:#6f59ee;
+      --ok:#58e3a4;--warn:#ffbf69;
     }
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
-      margin:0; min-height:100vh; display:grid; place-items:center;
-      font-family:Inter,Segoe UI,Arial,sans-serif; color:var(--text);
+      margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);
       background:
-        radial-gradient(circle at 50% -10%, rgba(120,91,255,.22), transparent 38%),
-        linear-gradient(180deg,#0c0f17,#080a0f 72%);
-      padding:28px;
+        radial-gradient(circle at 50% -10%,rgba(123,94,255,.22),transparent 34%),
+        linear-gradient(180deg,#0b0e16,#080a10 58%,#07090e);
     }
-    .card{
-      width:min(680px,100%); padding:42px; border-radius:26px;
-      background:linear-gradient(150deg,rgba(32,27,60,.72),rgba(18,22,33,.95) 45%,rgba(13,16,24,.98));
-      border:1px solid var(--line);
-      box-shadow:0 30px 90px rgba(0,0,0,.46),0 0 42px rgba(105,82,232,.10);
-      text-align:center;
+    a{color:inherit}
+    .wrap{width:min(1180px,calc(100% - 36px));margin:auto}
+    header{
+      position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);
+      background:rgba(8,10,16,.72);border-bottom:1px solid rgba(255,255,255,.06)
     }
-    .logo{
-      width:84px;height:84px;margin:0 auto 20px;border-radius:24px;
-      display:grid;place-items:center;
+    nav{height:72px;display:flex;align-items:center;gap:22px}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:.2px;text-decoration:none}
+    .brand-badge{
+      width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
       background:linear-gradient(135deg,var(--accent),var(--accent2));
-      box-shadow:0 18px 45px rgba(109,92,232,.28);
+      box-shadow:0 12px 28px rgba(111,89,238,.28)
     }
-    .logo svg{width:43px;height:43px}
-    h1{font-size:36px;margin:0 0 10px}
-    p{color:var(--muted);line-height:1.65;margin:0 auto 25px;max-width:520px}
-    a.button{
-      display:inline-flex;align-items:center;justify-content:center;
-      min-height:48px;padding:0 22px;border-radius:14px;text-decoration:none;
-      background:linear-gradient(135deg,#b3a5ff,#8e7cff);
-      color:#171326;font-weight:800;
+    .brand-badge svg{width:22px;height:22px}
+    .spacer{flex:1}
+    .navlink{text-decoration:none;color:#aeb5c5;font-size:14px}
+    .navlink:hover{color:white}
+    .button{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;
+      padding:0 18px;border-radius:14px;text-decoration:none;font-weight:800;border:1px solid transparent
     }
-    .small{font-size:13px;margin-top:22px}
+    .button.primary{background:linear-gradient(135deg,#b8acff,#8f7cff);color:#181426}
+    .button.secondary{background:#151a25;border-color:#313746;color:#e8e4ff}
+    .hero{padding:92px 0 66px;text-align:center}
+    .pill{
+      display:inline-flex;padding:8px 12px;border-radius:999px;background:rgba(170,152,255,.08);
+      border:1px solid rgba(170,152,255,.22);color:#cbc3ff;font-size:13px;font-weight:700
+    }
+    h1{font-size:clamp(42px,7vw,76px);line-height:1.02;margin:22px auto 18px;max-width:970px;letter-spacing:-2.8px}
+    h1 span{background:linear-gradient(90deg,#fff,#b6a9ff 65%,#8f7cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero p{max-width:760px;margin:0 auto;color:var(--muted);font-size:18px;line-height:1.7}
+    .hero-actions{margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .mock{
+      margin:58px auto 0;max-width:980px;padding:12px;border-radius:26px;
+      background:linear-gradient(135deg,rgba(170,152,255,.13),rgba(255,255,255,.02));
+      border:1px solid rgba(170,152,255,.20);
+      box-shadow:0 40px 110px rgba(0,0,0,.45),0 0 70px rgba(111,89,238,.08)
+    }
+    .window{background:#0d1119;border:1px solid #242a37;border-radius:19px;overflow:hidden;text-align:left}
+    .windowbar{height:46px;border-bottom:1px solid #252b38;display:flex;align-items:center;padding:0 16px;gap:7px}
+    .dot{width:9px;height:9px;border-radius:50%;background:#303747}.dot:nth-child(2){background:#554878}.dot:nth-child(3){background:#8b78eb}
+    .dash{padding:22px}
+    .dash-top{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .stat{flex:1;min-width:150px;padding:13px;border-radius:13px;background:#131824;border:1px solid #272d3a}
+    .stat small{color:#838c9f}.stat b{display:block;font-size:22px;margin-top:3px}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .acct{padding:15px;border-radius:15px;background:linear-gradient(150deg,rgba(119,94,255,.09),#121722);border:1px solid #2b3140}
+    .acct-head{display:flex;align-items:center;gap:9px}.game{width:36px;height:36px;border-radius:11px;background:#242b3a;display:grid;place-items:center}
+    .acct h3{font-size:14px;margin:0}.acct small{color:#798296}
+    .line{height:6px;border-radius:999px;background:#282e3b;margin-top:15px;overflow:hidden}.line i{display:block;height:100%;width:78%;background:linear-gradient(90deg,#64e3ab,#9a86ff)}
+    section{padding:82px 0}
+    .eyebrow{color:#b4a8ff;text-transform:uppercase;font-size:12px;letter-spacing:1.7px;font-weight:850}
+    h2{font-size:clamp(30px,5vw,48px);letter-spacing:-1.5px;margin:9px 0 15px}
+    .section-lead{color:var(--muted);max-width:750px;line-height:1.7}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
+    .feature{padding:24px;border-radius:19px;background:linear-gradient(150deg,#141925,#10141d);border:1px solid #292f3c}
+    .feature .ico{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:rgba(170,152,255,.11);color:#b9adff;font-size:20px;margin-bottom:16px}
+    .feature h3{margin:0 0 9px;font-size:18px}.feature p{margin:0;color:var(--muted);line-height:1.6;font-size:14px}
+    .flow{margin-top:38px;display:grid;gap:14px}
+    .step{display:grid;grid-template-columns:62px 1fr;gap:18px;padding:22px;border-radius:18px;background:#10141d;border:1px solid #282e3b}
+    .num{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,#8975f4,#5f4acb);font-weight:900}
+    .step h3{margin:2px 0 7px}.step p{margin:0;color:var(--muted);line-height:1.6}
+    .security{display:grid;grid-template-columns:1.08fr .92fr;gap:18px;margin-top:34px}
+    .panel{padding:26px;border-radius:20px;background:#10141d;border:1px solid #292f3d}
+    .panel h3{margin-top:0}.checks{display:grid;gap:12px;margin-top:18px}
+    .check{display:flex;gap:10px;color:#cfd4df}.check b{color:var(--ok)}
+    .pro{background:linear-gradient(145deg,rgba(117,97,235,.18),rgba(16,20,29,.98) 48%);border:1px solid #3b355d}
+    .price{font-size:34px;font-weight:900;margin:12px 0 6px}.price small{font-size:14px;color:var(--muted);font-weight:600}
+    footer{padding:36px 0 60px;color:#737b8d;border-top:1px solid #1f2430;font-size:13px}
+    @media(max-width:850px){.cards,.grid,.security{grid-template-columns:1fr}.navlink{display:none}h1{letter-spacing:-1.5px}}
   </style>
 </head>
 <body>
-  <main class="card">
-    <div class="logo" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
-        <rect x="5" y="10" width="14" height="10" rx="2.5"/>
-        <path d="M8.5 10V7.5a3.5 3.5 0 0 1 7 0V10"/>
-        <path d="M12 14v2.5"/>
-      </svg>
+<header>
+  <div class="wrap"><nav>
+    <a class="brand" href="#">
+      <span class="brand-badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
+          <rect x="5" y="10" width="14" height="10" rx="2.5"/><path d="M8.5 10V7.5a3.5 3.5 0 0 1 7 0V10"/><path d="M12 14v2.5"/>
+        </svg>
+      </span>GamerLocker
+    </a>
+    <div class="spacer"></div>
+    <a class="navlink" href="#como-funciona">Como funciona</a>
+    <a class="navlink" href="#recursos">Recursos</a>
+    <a class="navlink" href="#diferencas">Por que GamerLocker?</a>
+    <a class="navlink" href="#seguranca">Segurança</a>
+    <a class="button secondary" href="https://github.com/GamerLocker/gamerlocker-releases/releases">Downloads</a>
+  </nav></div>
+</header>
+
+<main>
+  <section class="hero"><div class="wrap">
+    <span class="pill">Windows • Beta</span>
+    <h1><span>Suas contas de jogos, organizadas em um único cofre.</span></h1>
+    <p>GamerLocker foi criado para organizar logins, senhas, e-mails, níveis e informações das suas contas de jogos sem transformar isso em uma planilha ou bloco de notas.</p>
+    <div class="hero-actions">
+      <a class="button primary" href="https://github.com/GamerLocker/gamerlocker-releases/releases">Baixar GamerLocker</a>
+      <a class="button secondary" href="#como-funciona">Conheça o GamerLocker</a>
     </div>
-    <h1>GamerLocker</h1>
-    <p>Seu cofre para organizar contas de jogos, manter seus dados protegidos e acessar tudo de forma simples.</p>
-    <a class="button" href="https://github.com/GamerLocker/gamerlocker-releases/releases">Baixar GamerLocker</a>
-    <p class="small">Windows 64-bit • Beta</p>
-  </main>
+
+    <div class="mock"><div class="window">
+      <div class="windowbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+      <div class="dash">
+        <div class="dash-top">
+          <div class="stat"><small>Contas</small><b>12</b></div>
+          <div class="stat"><small>Favoritas</small><b>3</b></div>
+          <div class="stat"><small>Protegidas</small><b>9</b></div>
+          <div class="stat"><small>Atenção</small><b>3</b></div>
+        </div>
+        <div class="cards">
+          <div class="acct"><div class="acct-head"><span class="game">🎮</span><div><h3>Conta principal</h3><small>Steam • LV3</small></div></div><div class="line"><i></i></div></div>
+          <div class="acct"><div class="acct-head"><span class="game">★</span><div><h3>Conta competitiva</h3><small>Steam • LV2</small></div></div><div class="line"><i style="width:92%"></i></div></div>
+          <div class="acct"><div class="acct-head"><span class="game">🔐</span><div><h3>Conta alternativa</h3><small>Personalizada</small></div></div><div class="line"><i style="width:55%"></i></div></div>
+        </div>
+      </div>
+    </div></div>
+  </div></section>
+
+  <section id="como-funciona"><div class="wrap">
+    <div class="eyebrow">Conheça o GamerLocker</div>
+    <h2>Como ele funciona, na prática</h2>
+    <p class="section-lead">Do primeiro cadastro ao uso diário: a ideia é reduzir o trabalho para encontrar e organizar suas contas sem deixar informações sensíveis espalhadas.</p>
+    <div class="flow">
+      <article class="step"><div class="num">01</div><div><h3>Crie sua conta GamerLocker</h3><p>Use seu e-mail para acessar o aplicativo. A conta GamerLocker é separada da senha do seu cofre local.</p></div></article>
+      <article class="step"><div class="num">02</div><div><h3>Crie seu cofre criptografado</h3><p>Defina a senha do cofre e guarde sua Recovery Key. É dentro desse cofre que ficam os dados sensíveis das contas.</p></div></article>
+      <article class="step"><div class="num">03</div><div><h3>Cadastre ou importe suas contas</h3><p>Você pode cadastrar manualmente ou colar várias linhas de uma vez. O importador reconhece formatos comuns e permite revisar tudo antes de salvar.</p></div></article>
+      <article class="step"><div class="num">04</div><div><h3>Organize do seu jeito</h3><p>Favoritos, pesquisa, campos personalizados, níveis e drag-and-drop ajudam a montar um dashboard que faça sentido para você.</p></div></article>
+      <article class="step"><div class="num">05</div><div><h3>Use no dia a dia</h3><p>Copie login ou senha direto do card, abra o perfil Steam e veja o indicador de segurança de cada conta sem abrir várias telas.</p></div></article>
+      <article class="step"><div class="num">06</div><div><h3>Mantenha um backup</h3><p>Exporte seu cofre quando quiser. Em outro computador, o arquivo pode ser restaurado e desbloqueado com sua própria senha.</p></div></article>
+    </div>
+  </div></section>
+
+  <section id="recursos"><div class="wrap">
+    <div class="eyebrow">Recursos</div>
+    <h2>Feito para quem realmente gerencia várias contas</h2>
+    <div class="grid">
+      <article class="feature"><div class="ico">⌕</div><h3>Pesquisa rápida</h3><p>Encontre suas contas sem percorrer manualmente o dashboard.</p></article>
+      <article class="feature"><div class="ico">⇅</div><h3>Organização por arrastar</h3><p>Mova os cards diretamente no dashboard para manter sua ordem preferida.</p></article>
+      <article class="feature"><div class="ico">★</div><h3>Favoritos</h3><p>Destaque as contas mais usadas e deixe o que importa sempre visível.</p></article>
+      <article class="feature"><div class="ico">↯</div><h3>Importação em massa</h3><p>Cole listas em formatos diferentes, revise o que foi detectado e importe em lote.</p></article>
+      <article class="feature"><div class="ico">◫</div><h3>Campos personalizados</h3><p>Salve informações específicas de cada conta e escolha o que aparece no dashboard.</p></article>
+      <article class="feature"><div class="ico">↗</div><h3>Perfil Steam</h3><p>Use o SteamID para abrir o perfil público diretamente quando necessário.</p></article>
+    </div>
+  </div></section>
+
+  <section id="diferencas"><div class="wrap">
+    <div class="eyebrow">Por que GamerLocker?</div>
+    <h2>Não é só mais um gerenciador de senhas.</h2>
+    <p class="section-lead">
+      Passkeys e gerenciadores de senhas são excelentes para autenticação geral.
+      O GamerLocker tem outro foco: organizar o ecossistema de contas de jogos,
+      junto com informações que normalmente ficam espalhadas em planilhas,
+      blocos de notas, e-mails e perfis.
+    </p>
+
+    <div class="grid">
+      <article class="feature">
+        <div class="ico">🎮</div>
+        <h3>Feito para contas de jogos</h3>
+        <p>
+          Além de login e senha, você pode guardar SteamID, nível, Premier Rating,
+          Prime, FACEIT, e-mail vinculado, telefone, campos personalizados e outras
+          informações que um gerenciador de senhas tradicional normalmente não organiza.
+        </p>
+      </article>
+
+      <article class="feature">
+        <div class="ico">🧩</div>
+        <h3>Organização visual</h3>
+        <p>
+          Dashboard com favoritos, pesquisa, drag-and-drop, badges de nível,
+          score de segurança e campos visíveis por conta. A ideia é encontrar
+          e entender suas contas rapidamente, não apenas preencher uma senha.
+        </p>
+      </article>
+
+      <article class="feature">
+        <div class="ico">⚡</div>
+        <h3>Importação em massa</h3>
+        <p>
+          Cole várias contas de uma vez em formatos diferentes, revise o que foi
+          reconhecido e importe em lote. É pensado para quem administra muitas
+          contas de jogos no dia a dia.
+        </p>
+      </article>
+    </div>
+
+    <div class="security" style="margin-top:18px">
+      <div class="panel">
+        <div class="eyebrow">GamerLocker x Passkeys</div>
+        <h3>São coisas diferentes — e podem coexistir.</h3>
+        <p class="section-lead">
+          Uma passkey substitui a senha em serviços que oferecem esse recurso.
+          O GamerLocker não tenta substituir passkeys: ele funciona como um cofre
+          e painel de organização para suas contas e dados relacionados.
+        </p>
+        <div class="checks">
+          <div class="check"><b>✓</b><span>Passkey: autentica você em um serviço compatível.</span></div>
+          <div class="check"><b>✓</b><span>GamerLocker: organiza contas, credenciais, metadados e recuperação.</span></div>
+          <div class="check"><b>✓</b><span>Você pode usar os dois juntos.</span></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="eyebrow">GamerLocker x Gerenciador de senhas</div>
+        <h3>Mais contexto gamer, menos lista genérica.</h3>
+        <p class="section-lead">
+          Um gerenciador de senhas tradicional é ótimo para sites e preenchimento automático.
+          O GamerLocker prioriza contexto de jogo, organização visual e informações específicas
+          de cada conta.
+        </p>
+        <div class="checks">
+          <div class="check"><b>✓</b><span>Dashboard voltado para contas de jogos.</span></div>
+          <div class="check"><b>✓</b><span>Campos e indicadores específicos por conta.</span></div>
+          <div class="check"><b>✓</b><span>Backup manual criptografado e Recovery Key.</span></div>
+        </div>
+      </div>
+    </div>
+  </div></section>
+
+  <section id="seguranca"><div class="wrap">
+    <div class="eyebrow">Segurança por design</div>
+    <h2>O cofre foi pensado para reduzir exposição dos seus dados.</h2>
+    <p class="section-lead">
+      O objetivo é manter credenciais sensíveis separadas da conta GamerLocker
+      e protegidas dentro do cofre local criptografado.
+    </p>
+
+    <div class="grid">
+      <article class="feature">
+        <div class="ico">🔐</div>
+        <h3>AES-256-GCM</h3>
+        <p>
+          Os dados do cofre são criptografados localmente com AES-256-GCM,
+          um modo de criptografia autenticada que protege confidencialidade e integridade.
+        </p>
+      </article>
+
+      <article class="feature">
+        <div class="ico">🧠</div>
+        <h3>Argon2id</h3>
+        <p>
+          A senha do cofre é processada com Argon2id para derivação de chave,
+          aumentando o custo de tentativas automatizadas contra o arquivo do cofre.
+        </p>
+      </article>
+
+      <article class="feature">
+        <div class="ico">🗝️</div>
+        <h3>Recovery Key separada</h3>
+        <p>
+          A Recovery Key oferece uma segunda forma de proteger e recuperar a chave-mestra
+          do cofre sem transformar sua senha de login do GamerLocker em chave do cofre.
+        </p>
+      </article>
+
+      <article class="feature">
+        <div class="ico">💻</div>
+        <h3>Cofre local</h3>
+        <p>
+          As credenciais de jogos ficam no arquivo criptografado local. A conta GamerLocker
+          é usada para acesso ao aplicativo e plano, não como armazenamento em texto puro
+          das suas senhas de jogos.
+        </p>
+      </article>
+
+      <article class="feature">
+        <div class="ico">📋</div>
+        <h3>Clipboard temporário</h3>
+        <p>
+          Quando você copia um segredo, o GamerLocker tenta limpar o conteúdo do clipboard
+          automaticamente após alguns segundos para reduzir exposição acidental.
+        </p>
+      </article>
+
+      <article class="feature">
+        <div class="ico">💾</div>
+        <h3>Backup criptografado</h3>
+        <p>
+          O backup preserva o cofre em formato criptografado, permitindo restaurar seus dados
+          sem exportar as credenciais em texto aberto.
+        </p>
+      </article>
+    </div>
+
+    <div class="panel" style="margin-top:18px">
+      <h3>Transparência de segurança</h3>
+      <p class="section-lead" style="max-width:none">
+        O GamerLocker ainda está em beta e não passou por auditoria de segurança independente.
+        Por isso, não prometemos segurança absoluta. Recomendamos manter backups e continuar
+        usando recursos de proteção das próprias plataformas, como 2FA e passkeys quando disponíveis.
+      </p>
+    </div>
+
+    <div class="security">
+      <div class="panel">
+        <h3>Boas práticas continuam importantes</h3>
+        <div class="checks">
+          <div class="check"><b>✓</b><span>Use autenticação em dois fatores nas contas de jogos.</span></div>
+          <div class="check"><b>✓</b><span>Ative passkeys quando a plataforma oferecer.</span></div>
+          <div class="check"><b>✓</b><span>Guarde sua Recovery Key em local separado e seguro.</span></div>
+          <div class="check"><b>✓</b><span>Mantenha um backup recente do cofre.</span></div>
+        </div>
+      </div>
+
+      <div class="panel pro">
+        <div class="eyebrow">GamerLocker PRO</div>
+        <h3>Para quem precisa de mais espaço e recursos</h3>
+        <div class="price">R$ 29,90 <small>/ mês</small></div>
+        <p class="section-lead">
+          O plano FREE permite até 3 contas. O PRO libera contas ilimitadas
+          e recursos premium previstos para a evolução do GamerLocker.
+        </p>
+        <div style="margin-top:20px">
+          <a class="button primary" href="https://github.com/GamerLocker/gamerlocker-releases/releases">
+            Experimentar GamerLocker
+          </a>
+        </div>
+      </div>
+    </div>
+  </div></section>
+
+</main>
+
+<footer><div class="wrap">GamerLocker • Projeto em beta. Mantenha sempre um backup do seu cofre.</div></footer>
 </body>
 </html>
