@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#10131d" />
+  <title>GamerLocker</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg:#090b11; --panel:#121621; --line:#2b3140; --text:#f3f0ff;
+      --muted:#9da4b5; --accent:#a997ff; --accent2:#6d5ce8;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; display:grid; place-items:center;
+      font-family:Inter,Segoe UI,Arial,sans-serif; color:var(--text);
+      background:
+        radial-gradient(circle at 50% -10%, rgba(120,91,255,.22), transparent 38%),
+        linear-gradient(180deg,#0c0f17,#080a0f 72%);
+      padding:28px;
+    }
+    .card{
+      width:min(680px,100%); padding:42px; border-radius:26px;
+      background:linear-gradient(150deg,rgba(32,27,60,.72),rgba(18,22,33,.95) 45%,rgba(13,16,24,.98));
+      border:1px solid var(--line);
+      box-shadow:0 30px 90px rgba(0,0,0,.46),0 0 42px rgba(105,82,232,.10);
+      text-align:center;
+    }
+    .logo{
+      width:84px;height:84px;margin:0 auto 20px;border-radius:24px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:0 18px 45px rgba(109,92,232,.28);
+    }
+    .logo svg{width:43px;height:43px}
+    h1{font-size:36px;margin:0 0 10px}
+    p{color:var(--muted);line-height:1.65;margin:0 auto 25px;max-width:520px}
+    a.button{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-height:48px;padding:0 22px;border-radius:14px;text-decoration:none;
+      background:linear-gradient(135deg,#b3a5ff,#8e7cff);
+      color:#171326;font-weight:800;
+    }
+    .small{font-size:13px;margin-top:22px}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
+        <rect x="5" y="10" width="14" height="10" rx="2.5"/>
+        <path d="M8.5 10V7.5a3.5 3.5 0 0 1 7 0V10"/>
+        <path d="M12 14v2.5"/>
+      </svg>
+    </div>
+    <h1>GamerLocker</h1>
+    <p>Seu cofre para organizar contas de jogos, manter seus dados protegidos e acessar tudo de forma simples.</p>
+    <a class="button" href="https://github.com/GamerLocker/gamerlocker-releases/releases">Baixar GamerLocker</a>
+    <p class="small">Windows 64-bit • Beta</p>
+  </main>
+</body>
+</html>
